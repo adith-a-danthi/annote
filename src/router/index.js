@@ -3,10 +3,29 @@ import VueRouter from 'vue-router'
 import firebase from "@/utils/firebase";
 import Home from '../views/Home.vue'
 import Login from '@/views/Login'
+import Signup from "@/views/Signup";
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '*',
+    redirect: '/login'
+  },
+  {
+    path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/signup',
+    name: 'Sign Up',
+    component: Signup
+  },
   {
     path: '/home',
     name: 'Home',
