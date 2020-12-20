@@ -21,13 +21,13 @@
 
 <script>
 // @ is an alias to /src
-import firebase from "firebase";
+import firebase from "@/utils/firebase";
 
 export default {
   name: 'Home',
   methods: {
     logout: function () {
-      firebase.auth().signOut()
+      firebase.auth.signOut()
           .then(() => {
             this.$router.push('login');
           });

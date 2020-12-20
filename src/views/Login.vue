@@ -5,19 +5,20 @@
         elevation="2"
     >
       <v-card-title class="mb-5">
-        <h2 style="color:#66a6ff;">Login</h2>
+        <h1>Annote</h1>
       </v-card-title>
       <v-card-text>
+        <h2 class="mb-5" style="color:#66a6ff;">Login</h2>
 
         <v-text-field
-          v-model="form.email"
-          type="email"
-          label="Email ID"
-          prepend-inner-icon="mdi-email"
-          color="#66a6ff"
-          :rules="rules.email"
-          required
-          outlined
+            v-model="form.email"
+            type="email"
+            label="Email ID"
+            prepend-inner-icon="mdi-email"
+            color="#66a6ff"
+            :rules="rules.email"
+            required
+            outlined
         ></v-text-field>
 
         <v-text-field
@@ -34,9 +35,8 @@
             required
             outlined
         ></v-text-field>
-
         <v-row>
-          <v-col>
+          <v-col class="mt-0 pt-0">
             <v-btn
                 class="text-capitalize"
                 color="#66a6ff"
@@ -45,11 +45,12 @@
               Forgot Password?
             </v-btn>
           </v-col>
-          <v-col class="text-right">
+          <v-col class="text-right mt-0 pt-0">
             <v-btn
                 class="text-capitalize"
                 color="#66a6ff"
                 text
+                to="signup"
             >
               Sign Up
             </v-btn>
@@ -58,10 +59,11 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-          class="mx-auto"
-          color="#66a6ff"
-          style="color: white"
-          elevation="0"
+            class="mx-auto"
+            color="#66a6ff"
+            style="color: white"
+            elevation="0"
+            @click="login"
         >
           Login
         </v-btn>
@@ -71,10 +73,11 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from "@/utils/firebase";
 
 export default {
   name: "Login",
+
   data() {
     const defaultForm = Object.freeze({
       email: '',
@@ -90,15 +93,17 @@ export default {
       }
     }
   },
+
   methods: {
     login: function () {
-      firebase.auth().signInWithEmailAndPassword(this.form.email, this.form.password)
-          .then(()=>{
-            this.$router.replace('home');
+      firebase.auth.signInWithEmailAndPassword(this.form.email, this.form.password)
+          .then((user) => {
+            console.log(user)
+            this.$router.push('home');
           })
           .catch(err => {
             console.log(err);
-            alert('Error Logging In');
+            alert('Oops. ' + err.message);
           });
 
     }
@@ -107,7 +112,7 @@ export default {
 </script>
 
 <style scoped>
-.bg-gradient{
+.bg-gradient {
   background-image: linear-gradient(to bottom, #66a6ff 50%, #ace0f9 100%);
 }
 </style>
