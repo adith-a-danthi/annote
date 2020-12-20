@@ -1,7 +1,5 @@
 # annote
 
----
-
 ## Project setup
 ```
 npm install
