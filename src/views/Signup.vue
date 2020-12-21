@@ -11,6 +11,16 @@
         <h2 class="mb-5" style="color:#66a6ff;">Sign Up</h2>
 
         <v-text-field
+            v-model="form.name"
+            type="name"
+            label="Full Name"
+            prepend-inner-icon="mdi-user"
+            color="#66a6ff"
+            required
+            outlined
+        ></v-text-field>
+
+        <v-text-field
             v-model="form.email"
             type="email"
             label="Email ID"
@@ -90,6 +100,7 @@ export default {
   data() {
 
     const defaultForm = Object.freeze({
+      name: '',
       email: '',
       password: '',
       confirmPassword: ''
@@ -113,8 +124,17 @@ export default {
     signUp: function () {
       firebase.auth.createUserWithEmailAndPassword(this.form.email, this.form.password)
           .then((user) => {
-            console.log(user)
-            this.$router.push('home');
+            firebase.usersCollection.doc(user.uid).set({
+              name: this.form.name,
+              email: this.form.email,
+              uid: firebase.auth.currentUser.uid
+            }).then(() => {
+              this.$router.push('home');
+            })
+            .catch(err => {
+              console.log(err);
+              alert('Oops. ' + err.message);
+            })
           })
           .catch(err => {
             console.log(err);
