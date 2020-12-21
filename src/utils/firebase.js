@@ -1,5 +1,6 @@
 import firebase from "firebase";
 import "firebase/auth"
+import "firebase/firestore"
 
 export const config = {
     apiKey: process.env.VUE_APP_API_KEY,
@@ -14,5 +15,13 @@ export const config = {
 const firebaseApp = firebase.initializeApp(config);
 
 const auth = firebaseApp.auth();
+const db = firebaseApp.firestore();
 
-export default {auth};
+const usersCollection = db.collection('users');
+const notesCollection = db.collection('notes');
+
+export default {
+    auth,
+    usersCollection,
+    notesCollection
+};
