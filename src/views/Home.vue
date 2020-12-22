@@ -25,8 +25,21 @@
         md="3"
       >
         <v-card>
-          <v-card-title>
-            <h4 v-text="note.title"></h4>
+          <v-card-title class="my-0 py-0">
+            <v-row>
+              <v-col>
+                <h4 v-text="note.title"></h4>
+              </v-col>
+              <v-col class="text-right">
+                <v-btn
+                    icon
+                    x-small
+                    @click="deleteNote(index)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card-title>
           <v-card-text>
             <p> {{ note.content }} </p>
@@ -52,7 +65,8 @@ export default {
     this.getNotes();
   },
   data: () => ({
-    notes: []
+    notes: [],
+    notesId: []
   }),
   methods: {
     logout: function () {
@@ -65,11 +79,11 @@ export default {
       firebase.notesCollection.where("userId", "==", firebase.auth.currentUser.uid)
           .get()
           .then(querySnapshot => {
-            console.log(querySnapshot);
             this.notes = [];
+            this.notesId = [];
             querySnapshot.forEach(note => {
-              console.log(note.data());
               this.notes.push(note.data());
+              this.notesId.push(note["id"]);
             });
           })
           .catch(err => {
@@ -77,6 +91,18 @@ export default {
             alert('Oops! Error fetching notes');
           });
 
+    },
+    deleteNote: function (index) {
+      const removedNoteId = this.notesId[index];
+      firebase.notesCollection.doc(removedNoteId).delete()
+          .then(() => {
+            this.getNotes();
+            alert('Note Deleted');
+          })
+          .catch(err => {
+            console.log(err);
+            alert('Oops! Error deleting note');
+          });
     }
   }
 }
