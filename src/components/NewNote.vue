@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row >
-      <v-col class="mx-auto" cols="6">
+      <v-col class="mx-auto" cols="10" md="6">
         <v-card class="mx-auto">
           <v-card-title>
             <h4>Add Note</h4>
@@ -75,6 +75,7 @@ export default {
       })
           .then(() => {
             alert('Note Added');
+            this.clear();
             this.$emit('noteAdded');
           })
           .catch(err => {

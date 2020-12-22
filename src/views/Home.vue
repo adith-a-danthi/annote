@@ -15,7 +15,25 @@
 
     <br>
 
-    <new-note/>
+    <new-note @noteAdded="getNotes" />
+
+    <v-row>
+      <v-col
+        v-for="(note, index) in notes"
+        v-bind:key="index"
+        cols="6"
+        md="3"
+      >
+        <v-card>
+          <v-card-title>
+            <h4 v-text="note.title"></h4>
+          </v-card-title>
+          <v-card-text>
+            <p> {{ note.content }} </p>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
 
   </v-container>
 </template>
@@ -30,8 +48,11 @@ export default {
   components: {
     'new-note': NewNote
   },
+  mounted() {
+    this.getNotes();
+  },
   data: () => ({
-
+    notes: []
   }),
   methods: {
     logout: function () {
@@ -39,6 +60,23 @@ export default {
           .then(() => {
             this.$router.push('login');
           });
+    },
+    getNotes: function () {
+      firebase.notesCollection.where("userId", "==", firebase.auth.currentUser.uid)
+          .get()
+          .then(querySnapshot => {
+            console.log(querySnapshot);
+            this.notes = [];
+            querySnapshot.forEach(note => {
+              console.log(note.data());
+              this.notes.push(note.data());
+            });
+          })
+          .catch(err => {
+            console.log(err);
+            alert('Oops! Error fetching notes');
+          });
+
     }
   }
 }
