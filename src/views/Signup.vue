@@ -127,7 +127,7 @@ export default {
             firebase.usersCollection.doc(user.uid).set({
               name: this.form.name,
               email: this.form.email,
-              uid: firebase.auth.currentUser.uid
+              userId: firebase.auth.currentUser.uid
             }).then(() => {
               this.$router.push('home');
             })
