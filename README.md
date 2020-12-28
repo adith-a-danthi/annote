@@ -1,5 +1,5 @@
 # annote
-
+A personal notes app built using Vue.js and Firebase
 ## Project setup
 ```
 npm install
